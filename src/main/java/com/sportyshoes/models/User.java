@@ -14,6 +14,7 @@ public class User {
 	private String name;
 	private String password;
 	private Timestamp createTime;
+	private UserRole userRole;
 
 	public String getUserId() {
 		return userId;
@@ -45,6 +46,14 @@ public class User {
 
 	public void setCreateTime(Timestamp createTime) {
 		this.createTime = createTime;
+	}
+
+	public UserRole getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(UserRole userRole) {
+		this.userRole = userRole;
 	}
 
 	@Override

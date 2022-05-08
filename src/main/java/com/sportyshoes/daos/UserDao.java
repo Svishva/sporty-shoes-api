@@ -7,6 +7,12 @@ import com.sportyshoes.models.User;
 
 public interface UserDao {
 
-	List<User> searchUserByName(String name) throws DatabaseOperationException;
+	List<User> getUserByUserId(String name) throws DatabaseOperationException;
+
+	Integer updateUserPassword(User user) throws DatabaseOperationException;
+
+	List<User> getAllUsers() throws DatabaseOperationException;
+
+	List<User> searchUserByName(String userName) throws DatabaseOperationException;
 
 }
