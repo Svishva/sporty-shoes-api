@@ -79,4 +79,53 @@ public class ProductRepository implements ProductDao {
 		return products;
 	}
 
+	@Override
+	public Integer addProduct(Product product) throws DatabaseOperationException {
+		String insertProdcuctFormat = """
+				INSERT INTO products
+				 (product_id,
+				 name,
+				 msrp,
+				 quantity_in_stock,
+				 product_vendor)
+				 VALUES (
+				   ?, ?, ?, ?, ?
+				   )""";
+
+		Integer recordsInserted = 0;
+
+		try {
+			recordsInserted = jdbcTemplate.update(insertProdcuctFormat, product.getProductId(), product.getName(),
+					product.getMsrp(), product.getQuantityInStock(), product.getProductVendor());
+		} catch (DataAccessException e) {
+			throw new DatabaseOperationException("Exception occurred while inserting a new worker record!", e);
+		}
+		return recordsInserted;
+	}
+
+	@Override
+	public Integer updateProduct(Product product) throws DatabaseOperationException {
+		String updateProductFormat = """
+				UPDATE products
+				SET
+				    name = ?,
+				    msrp = ?,
+				    quantity_in_stock = ?,
+				    product_vendor = ?
+				WHERE
+				    product_id = ?""";
+
+		Integer recordsUpdated = 0;
+
+		try {
+			recordsUpdated = jdbcTemplate.update(updateProductFormat, product.getName(), product.getMsrp(),
+					product.getQuantityInStock(), product.getProductVendor(), product.getProductId());
+		} catch (DataAccessException e) {
+			throw new DatabaseOperationException(String.format(
+					"Exception occurred while updating the record of worker with ID %s", product.getProductId()), e);
+		}
+
+		return recordsUpdated;
+	}
+
 }
