@@ -2,7 +2,6 @@ package com.sportyshoes.repositories;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.StringJoiner;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.sportyshoes.daos.UserDao;
 import com.sportyshoes.exceptions.DatabaseOperationException;
-import com.sportyshoes.mappers.ProductRowMapper;
 import com.sportyshoes.mappers.UserRowMapper;
-import com.sportyshoes.models.Product;
 import com.sportyshoes.models.User;
 
 @Component
