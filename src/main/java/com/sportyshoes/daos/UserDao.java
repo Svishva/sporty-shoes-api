@@ -15,4 +15,6 @@ public interface UserDao {
 
 	List<User> searchUserByName(String userName) throws DatabaseOperationException;
 
+	Integer updateUserName(User user) throws DatabaseOperationException;
+
 }

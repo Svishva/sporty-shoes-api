@@ -81,4 +81,16 @@ public class UserService {
 		}
 	}
 
+	public void updateUserName(User user) throws MyResourceNotUpdatedException {
+		try {
+			Integer recordsUpdated = this.userRepository.updateUserName(user);
+			if (recordsUpdated == 0) {
+				throw new MyResourceNotUpdatedException("Could not update User Password!!!");
+			}
+		} catch (DatabaseOperationException e) {
+			e.printStackTrace();
+			throw new MyResourceNotUpdatedException("Something went wrong when updating the worker records!");
+		}
+	}
+
 }

@@ -92,4 +92,21 @@ public class UserRepository implements UserDao {
 		return users;
 	}
 
+	@Override
+	public Integer updateUserName(User user) throws DatabaseOperationException {
+
+		String updateUserNameFormat = new StringJoiner("").add("UPDATE users SET `name` = '").add(user.getName())
+				.add("' WHERE user_id = '").add(user.getUserId()).add("'").toString();
+
+		Integer recordsUpdated = 0;
+
+		try {
+			recordsUpdated = jdbcTemplate.update(updateUserNameFormat);
+		} catch (DataAccessException e) {
+			throw new DatabaseOperationException("Exception occurred while update User name User ID", e);
+		}
+
+		return recordsUpdated;
+	}
+
 }
