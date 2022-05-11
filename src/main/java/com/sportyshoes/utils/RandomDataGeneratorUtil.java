@@ -8,7 +8,7 @@ public class RandomDataGeneratorUtil {
 		throw new IllegalStateException("Utility class");
 	}
 
-	public static String getNanoID() {
+	private static String getNanoID() {
 		return NanoIdUtils.randomNanoId();
 	}
 

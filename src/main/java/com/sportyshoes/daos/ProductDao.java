@@ -17,4 +17,6 @@ public interface ProductDao {
 
 	Integer updateProduct(Product product) throws DatabaseOperationException;
 
+	Integer deleteProductById(String productId) throws DatabaseOperationException;
+
 }

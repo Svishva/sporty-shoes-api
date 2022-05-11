@@ -17,4 +17,8 @@ public interface UserDao {
 
 	Integer updateUserName(User user) throws DatabaseOperationException;
 
+	Integer signIn(User user) throws DatabaseOperationException;
+
+	Integer signUp(User user) throws DatabaseOperationException;
+
 }

@@ -67,4 +67,54 @@ public class OrderRepository implements OrderDao {
 		return orders;
 	}
 
+	@Override
+	public List<Order> getAllOrder() throws DatabaseOperationException {
+		String getAllUsersFormat = """
+				SELECT
+					order_id,
+					quantity,
+					user_id,
+					order_date,
+					create_time,
+					product_id
+				FROM
+					orders""";
+
+		List<Order> orders = Collections.emptyList();
+
+		try {
+			orders = jdbcTemplate.query(getAllUsersFormat, new OrderRowMapper());
+		} catch (DataAccessException e) {
+			throw new DatabaseOperationException("Exception occurred while fetching all Users records", e);
+		}
+
+		return orders;
+	}
+
+	@Override
+	public List<Order> getAllOrdersOfaProduct(String productId) throws DatabaseOperationException {
+		String getAllUsersFormat = """
+					SELECT
+					order_id,
+					quantity,
+					user_id,
+					order_date,
+					create_time,
+					product_id
+				FROM
+					orders u
+				WHERE
+					u.product_id = ?""";
+
+		List<Order> orders = Collections.emptyList();
+
+		try {
+			orders = jdbcTemplate.query(getAllUsersFormat, new Object[] { productId }, new OrderRowMapper());
+		} catch (DataAccessException e) {
+			throw new DatabaseOperationException("Exception occurred while fetching all Users records", e);
+		}
+
+		return orders;
+	}
+
 }

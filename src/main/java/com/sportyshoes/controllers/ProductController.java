@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sportyshoes.exceptions.MyResourceNotDeletedException;
 import com.sportyshoes.exceptions.MyResourceNotFoundException;
 import com.sportyshoes.exceptions.MyResourceNotUpdatedException;
 import com.sportyshoes.models.Product;
+import com.sportyshoes.services.OrderService;
 import com.sportyshoes.services.ProductService;
 
 @RestController
@@ -27,6 +30,9 @@ public class ProductController {
 
 	@Autowired
 	private ProductService productService;
+
+	@Autowired
+	private OrderService orderService;
 
 	public ProductController(ProductService productService) {
 		this.productService = productService;
@@ -127,6 +133,28 @@ public class ProductController {
 
 			return String.format("Record of Product with ID %s updated successfully.", product.getProductId());
 		} catch (MyResourceNotFoundException | MyResourceNotUpdatedException e) {
+			return e.getMessage();
+		}
+	}
+
+	@DeleteMapping("/{productId}/delete")
+	public String delete(@PathVariable String productId) {
+		try {
+			this.productService.deleteProduct(productId);
+			return String.format("Record of Product  with ID %s deleted successfully", productId);
+		} catch (MyResourceNotDeletedException e) {
+			return e.getMessage();
+		}
+	}
+
+	@GetMapping("/{productId}/order/all")
+	public String bringAllOrdersOfaProduct(@PathVariable String productId) {
+		try {
+			log.info("bringAllOrdersOfaProduct called \tsearchProductID=" + productId);
+
+			return this.orderService.getAllOrdersOfaProduct(productId).stream().map(String::valueOf)
+					.collect(Collectors.joining("\n"));
+		} catch (Exception e) {
 			return e.getMessage();
 		}
 	}

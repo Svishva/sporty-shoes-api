@@ -11,5 +11,8 @@ public interface OrderDao {
 
 	List<Order> getOrdersByUserId(String userId) throws DatabaseOperationException;
 
-	
+	List<Order> getAllOrder() throws DatabaseOperationException;
+
+	List<Order> getAllOrdersOfaProduct(String productId) throws DatabaseOperationException;
+
 }

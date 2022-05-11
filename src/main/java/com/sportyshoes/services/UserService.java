@@ -1,5 +1,7 @@
 package com.sportyshoes.services;
 
+import static com.sportyshoes.utils.RandomDataGeneratorUtil.getUniqueId;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.sportyshoes.daos.UserDao;
 import com.sportyshoes.exceptions.DatabaseOperationException;
+import com.sportyshoes.exceptions.MyResourceNotCreatedException;
 import com.sportyshoes.exceptions.MyResourceNotFoundException;
 import com.sportyshoes.exceptions.MyResourceNotUpdatedException;
 import com.sportyshoes.models.Product;
@@ -90,6 +93,37 @@ public class UserService {
 		} catch (DatabaseOperationException e) {
 			e.printStackTrace();
 			throw new MyResourceNotUpdatedException("Something went wrong when updating the worker records!");
+		}
+	}
+
+	public void signIn(User user) throws MyResourceNotCreatedException {
+		try {
+
+			Integer recordsCount = this.userRepository.signIn(user);
+
+			if (recordsCount == 0) {
+				throw new MyResourceNotCreatedException("Sign In Unsuccessful");
+			}
+		} catch (DatabaseOperationException e) {
+			e.printStackTrace();
+			throw new MyResourceNotCreatedException("Sign In Unsuccessful");
+		}
+	}
+
+	public void signUp(User user) throws MyResourceNotCreatedException {
+		try {
+
+			if (user != null && user.getUserId() == null) {
+				user.setUserId(getUniqueId());
+			}
+			Integer recordsInserted = this.userRepository.signUp(user);
+
+			if (recordsInserted == 0) {
+				throw new MyResourceNotCreatedException("Could not create new USER record!");
+			}
+		} catch (DatabaseOperationException e) {
+			e.printStackTrace();
+			throw new MyResourceNotCreatedException("Something went wrong when creating new USER record!");
 		}
 	}
 

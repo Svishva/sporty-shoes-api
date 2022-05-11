@@ -24,4 +24,12 @@ public class CollectionUtils {
 		return org.springframework.util.ObjectUtils.isEmpty(array);
 	}
 
+	public static boolean equals(String value1, String value2) {
+		return (value1 != null && value2 != null && value1.equals(value2));
+	}
+
+	public static boolean equalsIgnoreCase(String value1, String value2) {
+		return (value1 != null && value2 != null && value1.equalsIgnoreCase(value2));
+	}
+
 }

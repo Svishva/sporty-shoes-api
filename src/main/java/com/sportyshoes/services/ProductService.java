@@ -1,5 +1,6 @@
 package com.sportyshoes.services;
 
+import static com.sportyshoes.utils.CollectionUtils.isEmpty;
 import static com.sportyshoes.utils.RandomDataGeneratorUtil.getUniqueId;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 import com.sportyshoes.daos.ProductDao;
 import com.sportyshoes.exceptions.DatabaseOperationException;
 import com.sportyshoes.exceptions.MyResourceNotCreatedException;
+import com.sportyshoes.exceptions.MyResourceNotDeletedException;
 import com.sportyshoes.exceptions.MyResourceNotFoundException;
 import com.sportyshoes.exceptions.MyResourceNotUpdatedException;
 import com.sportyshoes.models.Product;
@@ -118,6 +120,28 @@ public class ProductService {
 			e.printStackTrace();
 			throw new MyResourceNotUpdatedException("Something went wrong when updating the Product record");
 		}
+	}
+
+	public void deleteProduct(String productId) throws MyResourceNotDeletedException {
+		try {
+
+			if (isEmpty(productId)) {
+				throw new Exception("Invalid Request");
+			}
+
+			Integer recordsDeleted = this.productDao.deleteProductById(productId);
+			if (recordsDeleted == 0) {
+				throw new MyResourceNotDeletedException(
+						String.format("PRODUCT record with ID %d not deleted!", productId));
+			}
+		} catch (DatabaseOperationException e) {
+			e.printStackTrace();
+			throw new MyResourceNotDeletedException("Something went wrong when deleting the PRODUCT record");
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new MyResourceNotDeletedException("Something went wrong when deleting the PRODUCT record");
+		}
+
 	}
 
 }

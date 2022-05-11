@@ -127,4 +127,25 @@ public class ProductRepository implements ProductDao {
 		return recordsUpdated;
 	}
 
+	@Override
+	public Integer deleteProductById(String productId) throws DatabaseOperationException {
+		String deleteProductFormat = """
+				DELETE
+				FROM
+					products
+				WHERE
+					product_id = ?""";
+
+		Integer recordsUpdated = 0;
+
+		try {
+			recordsUpdated = jdbcTemplate.update(deleteProductFormat, productId);
+		} catch (DataAccessException e) {
+			throw new DatabaseOperationException(
+					String.format("Exception occurred while deleting the record of worker with ID %s", productId), e);
+		}
+
+		return recordsUpdated;
+	}
+
 }

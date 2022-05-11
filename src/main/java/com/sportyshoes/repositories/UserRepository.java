@@ -109,4 +109,41 @@ public class UserRepository implements UserDao {
 		return recordsUpdated;
 	}
 
+	@Override
+	public Integer signIn(User user) throws DatabaseOperationException {
+
+		String searchUserByNameFormat = """
+				SELECT  user_id,  name,  `password`,  create_time
+				FROM  users u
+				WHERE  u.user_id = ? and `password` = ?""";
+
+		List<User> users = Collections.emptyList();
+
+		try {
+			users = jdbcTemplate.query(searchUserByNameFormat, new Object[] { user.getUserId(), user.getPassword() },
+					new UserRowMapper());
+		} catch (DataAccessException e) {
+			throw new DatabaseOperationException("Exception occurred while searching user by User ID", e);
+		}
+
+		return users.size();
+	}
+
+	@Override
+	public Integer signUp(User user) throws DatabaseOperationException {
+		String insertUserFormat = """
+				INSERT INTO
+				users (user_id,name,`password`)
+				VALUES (?, ?, ?)""";
+
+		Integer recordsInserted = 0;
+
+		try {
+			recordsInserted = jdbcTemplate.update(insertUserFormat, user.getUserId(), user.getName(),
+					user.getPassword());
+		} catch (DataAccessException e) {
+			throw new DatabaseOperationException("Exception occurred while inserting a new worker record!", e);
+		}
+		return recordsInserted;
+	}
 }

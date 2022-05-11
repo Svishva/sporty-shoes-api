@@ -116,7 +116,7 @@ public class UserController {
 			return e.getMessage();
 		}
 	}
-	
+
 	@PatchMapping("/{userId}/update/name")
 	public String updateName(@PathVariable String userId, @RequestBody User user) {
 		try {
@@ -132,6 +132,26 @@ public class UserController {
 			return "User Name updated Successfully";
 		} catch (MyResourceNotFoundException | MyResourceNotUpdatedException e) {
 			return e.getMessage();
+		} catch (Exception e) {
+			return e.getMessage();
+		}
+	}
+
+	@PostMapping("/signIn")
+	public String signIn(@RequestBody User user) {
+		try {
+			this.userService.signIn(user);
+			return "Sign in Successful";
+		} catch (Exception e) {
+			return e.getMessage();
+		}
+	}
+
+	@PostMapping("/signUp")
+	public String signUp(@RequestBody User user) {
+		try {
+			this.userService.signUp(user);
+			return "Sign in Successful";
 		} catch (Exception e) {
 			return e.getMessage();
 		}
